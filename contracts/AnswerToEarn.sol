@@ -29,7 +29,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
   struct AnswerStruct {
     uint id;
     uint qid;
-    string answer;
+    string comment;
     address owner;
     bool deleted;
     uint created;
@@ -51,9 +51,9 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     string memory description,
     string memory tags
   ) public payable {
-    require(bytes(title).length > 0, 'title must not empty');
-    require(bytes(description).length > 0, 'description must not empty');
-    require(bytes(tags).length > 0, 'tags must not empty');
+    require(bytes(title).length > 0, 'title must not be empty');
+    require(bytes(description).length > 0, 'description must not be empty');
+    require(bytes(tags).length > 0, 'tags must not be empty');
     require(msg.value > 0 ether, 'Insufficient amount');
 
     QuestionStruct memory question;
@@ -81,9 +81,9 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     string memory tags
   ) public {
     require(questionExists[qid], 'Question not found');
-    require(bytes(title).length > 0, 'title must not empty');
-    require(bytes(description).length > 0, 'description must not empty');
-    require(bytes(tags).length > 0, 'tags must not empty');
+    require(bytes(title).length > 0, 'title must not be empty');
+    require(bytes(description).length > 0, 'description must not be empty');
+    require(bytes(tags).length > 0, 'tags must not be empty');
     require(msg.sender == questions[qid].owner, 'Unauthorized entity!');
 
     questions[qid].title = title;
@@ -106,13 +106,13 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     emit Action(qid, 'Question deleted', msg.sender, currentTime());
   }
 
-  function getQuestions() public view returns (QuestionStruct[] memory Questions) {
+  function getQuestions() public view returns (QuestionStruct[] memory) {
     uint available = 0;
     for (uint i = 0; i < _totalQuestions.current(); i++) {
       if (!questions[i + 1].deleted) available++;
     }
 
-    Questions = new QuestionStruct[](available);
+    QuestionStruct[] memory Questions = new QuestionStruct[](available);
 
     uint index = 0;
     for (uint i = 0; i < _totalQuestions.current(); i++) {
@@ -120,14 +120,16 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
         Questions[index++] = questions[i + 1];
       }
     }
+
+    return Questions;
   }
 
   function getQuestion(uint qid) public view returns (QuestionStruct memory) {
     return questions[qid];
   }
 
-  function addAnswer(uint qid, string memory answer) public {
-    require(bytes(answer).length > 0, 'answer must not be empty');
+  function addAnswer(uint qid, string memory comment) public {
+    require(bytes(comment).length > 0, 'Answer must not be empty');
     require(questionExists[qid], 'Question not found');
 
     _totalAnswers.increment();
@@ -135,7 +137,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
 
     answer.id = _totalAnswers.current();
     answer.qid = qid;
-    answer.answer = answer;
+    answer.comment = comment;
     answer.owner = msg.sender;
     answer.created = currentTime();
     questions[qid].answers++;
@@ -144,13 +146,13 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     emit Action(answer.id, 'Answer created', msg.sender, currentTime());
   }
 
-  function getAnswers(uint qid) public view returns (AnswerStruct[] memory Answers) {
+  function getAnswers(uint qid) public view returns (AnswerStruct[] memory) {
     uint available = 0;
     for (uint i = 0; i < _totalAnswers.current(); i++) {
       if (answersOf[qid][i + 1].qid == qid) available++;
     }
 
-    Answers = new AnswerStruct[](available);
+    AnswerStruct[] memory Answers = new AnswerStruct[](available);
 
     uint index = 0;
     for (uint i = 0; i < _totalAnswers.current(); i++) {
@@ -158,10 +160,12 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
         Answers[index++] = answersOf[qid][i + 1];
       }
     }
+
+    return Answers;
   }
 
-  function getAnswer(uint qui, uint id) public view returns (AnswerStruct memory) {
-    return answersOf[qui][id];
+  function getAnswer(uint qid, uint id) public view returns (AnswerStruct memory) {
+    return answersOf[qid][id];
   }
 
   function payWinner(uint qid, uint id) public {
