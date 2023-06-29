@@ -17,7 +17,6 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     address owner;
     address winner;
     bool paidout;
-    bool refunded;
     bool deleted;
     uint updated;
     uint created;
@@ -29,7 +28,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
   struct AnswerStruct {
     uint id;
     uint qid;
-    string answer;
+    string comment;
     address owner;
     bool deleted;
     uint created;
@@ -51,9 +50,9 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     string memory description,
     string memory tags
   ) public payable {
-    require(bytes(title).length > 0, 'title must not empty');
-    require(bytes(description).length > 0, 'description must not empty');
-    require(bytes(tags).length > 0, 'tags must not empty');
+    require(bytes(title).length > 0, 'title must not be empty');
+    require(bytes(description).length > 0, 'description must not be empty');
+    require(bytes(tags).length > 0, 'tags must not be empty');
     require(msg.value > 0 ether, 'Insufficient amount');
 
     QuestionStruct memory question;
@@ -81,9 +80,10 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     string memory tags
   ) public {
     require(questionExists[qid], 'Question not found');
-    require(bytes(title).length > 0, 'title must not empty');
-    require(bytes(description).length > 0, 'description must not empty');
-    require(bytes(tags).length > 0, 'tags must not empty');
+    require(questions[qid].answers < 1, 'Question already with answer(s)');
+    require(bytes(title).length > 0, 'title must not be empty');
+    require(bytes(description).length > 0, 'description must not be empty');
+    require(bytes(tags).length > 0, 'tags must not be empty');
     require(msg.sender == questions[qid].owner, 'Unauthorized entity!');
 
     questions[qid].title = title;
@@ -96,6 +96,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
 
   function deleteQuestion(uint qid) public {
     require(questionExists[qid], 'Question not found');
+    require(questions[qid].answers < 1, 'Question already with answer(s)');
     require(msg.sender == questions[qid].owner, 'Unauthorized entity!');
 
     _totalQuestions.decrement();
@@ -126,16 +127,17 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     return questions[qid];
   }
 
-  function addAnswer(uint qid, string memory answer) public {
-    require(bytes(answer).length > 0, 'answer must not be empty');
+  function addAnswer(uint qid, string memory comment) public {
     require(questionExists[qid], 'Question not found');
+    require(!questions[qid].paidout, 'Question already paidout');
+    require(bytes(comment).length > 0, 'Answer must not be empty');
 
     _totalAnswers.increment();
     AnswerStruct memory answer;
 
     answer.id = _totalAnswers.current();
     answer.qid = qid;
-    answer.answer = answer;
+    answer.comment = comment;
     answer.owner = msg.sender;
     answer.created = currentTime();
     questions[qid].answers++;
@@ -155,19 +157,26 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     uint index = 0;
     for (uint i = 0; i < _totalAnswers.current(); i++) {
       if (answersOf[qid][i + 1].qid == qid) {
-        Answers[index++] = answersOf[qid][i + 1];
+        if (questions[qid].paidout) {
+          Answers[index++] = answersOf[qid][i + 1];
+        } else {
+          AnswerStruct memory answer = answersOf[qid][i + 1];
+          answer.comment = 'Hidden >> **** *** ** *** **** *** *** ** ****';
+          Answers[index++] = answer;
+        }
       }
     }
   }
 
-  function getAnswer(uint qui, uint id) public view returns (AnswerStruct memory) {
-    return answersOf[qui][id];
+  function getAnswer(uint qid, uint id) public view returns (AnswerStruct memory) {
+    return answersOf[qid][id];
   }
 
-  function payWinner(uint qid, uint id) public {
+  function payWinner(uint qid, uint id) public nonReentrant {
     require(questionExists[qid], 'Question not found');
+    require(answersOf[qid][id].id == id, 'Answer not found');
     require(!questions[qid].paidout, 'Question already paid out');
-    require(msg.sender == questions[qid].owner, 'Unauthorized entity');
+    require(msg.sender == questions[qid].owner || msg.sender == owner(), 'Unauthorized entity');
 
     uint256 reward = questions[qid].prize;
     uint256 tax = (reward * serviceFee) / 100;
@@ -180,8 +189,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     payTo(owner(), tax);
   }
 
-  function changeFee(uint256 fee) public {
-    require(msg.sender == owner(), 'Unauthorized entity');
+  function changeFee(uint256 fee) public onlyOwner {
     require(fee > 0 && fee <= 100, 'Fee must be between 1 - 100');
     serviceFee = fee;
   }
