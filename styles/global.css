@@ -18,3 +18,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.radial-gradient {
+  background-image: radial-gradient(66.89% 66.89% at 50% 33.11%, #1C1643 0%, #16112E 42.71%, #0D0B15 87.09%);
+}
