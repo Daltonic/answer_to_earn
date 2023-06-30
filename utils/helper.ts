@@ -1,4 +1,4 @@
-import { QuestionProp, TruncateProps } from './interfaces'
+import { AnswerProp, QuestionProp, TruncateProps } from './interfaces'
 
 export function generateRandomTags(count: number): string[] {
   const tags = ['Vue', 'Angular', 'React', 'Ajax', 'CSS', 'HTML']
@@ -40,36 +40,24 @@ export function generateQuestions(count: number): QuestionProp[] {
   return questions
 }
 
-export function getTimeAgo(timestamp: number) {
-  const currentTimestamp = Date.now()
-  const secondsAgo = Math.floor((currentTimestamp - timestamp) / 1000)
+export function generateAnswers(count: number): AnswerProp[] {
+  const answers: AnswerProp[] = []
 
-  if (secondsAgo < 60) {
-    return `${secondsAgo} second${secondsAgo === 1 ? '' : 's'} ago`
+  for (let i = 1; i <= count; i++) {
+    const answer: AnswerProp = {
+      id: i,
+      qid: i,
+      comment: `Ipsum dolor sit amet consectetur adipisicing elit.
+      Assumenda possimus fuga delectus, odit recusandae saepe odio! ${i}`,
+      owner: '0x1234567890123456789012345678901234567890',
+      deleted: false,
+      created: Date.now(),
+    }
+
+    answers.push(answer)
   }
 
-  const minutesAgo = Math.floor(secondsAgo / 60)
-  if (minutesAgo < 60) {
-    return `${minutesAgo} minute${minutesAgo === 1 ? '' : 's'} ago`
-  }
-
-  const hoursAgo = Math.floor(minutesAgo / 60)
-  if (hoursAgo < 24) {
-    return `${hoursAgo} hour${hoursAgo === 1 ? '' : 's'} ago`
-  }
-
-  const daysAgo = Math.floor(hoursAgo / 24)
-  if (daysAgo < 30) {
-    return `${daysAgo} day${daysAgo === 1 ? '' : 's'} ago`
-  }
-
-  const monthsAgo = Math.floor(daysAgo / 30)
-  if (monthsAgo < 12) {
-    return `${monthsAgo} month${monthsAgo === 1 ? '' : 's'} ago`
-  }
-
-  const yearsAgo = Math.floor(monthsAgo / 12)
-  return `${yearsAgo} year${yearsAgo === 1 ? '' : 's'} ago`
+  return answers
 }
 
 export function truncate({ text, startChars, endChars, maxLength }: TruncateProps): string {

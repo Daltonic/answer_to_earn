@@ -9,6 +9,15 @@ export interface TruncateProps {
   maxLength: number
 }
 
+export interface AnswerProp {
+  id: number
+  qid: number
+  comment: string
+  owner: string
+  deleted: boolean
+  created: number
+}
+
 export interface QuestionProp {
   id: number
   title: string

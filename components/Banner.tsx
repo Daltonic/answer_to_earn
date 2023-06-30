@@ -13,7 +13,7 @@ const Banner: React.FC = () => {
         </h1>
 
         <div className="flex justify-between items-center font-bold text-sm h-[10vh]">
-          <div className="flex space-x-2 items-center h-[24px]">
+          <div className="flex space-x-2 items-center h-[24px] text-[#BBBBBB]">
             <BiNetworkChart className="text-[#212D4A] w-[24px] h-[24px]" />
             <p>1 questions</p>
           </div>

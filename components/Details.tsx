@@ -4,9 +4,11 @@ import { Tags, TagsSm } from './Tags'
 import Identicon from 'react-identicons'
 import React from 'react'
 import { QuestionProp } from '@/utils/interfaces'
-import { getTimeAgo, truncate } from '@/utils/helper'
+import { truncate } from '@/utils/helper'
+import Moment from 'react-moment'
 
 const Details: React.FC<{ question: QuestionProp }> = ({ question }) => {
+  const currentTime = Date.now()
   return (
     <>
       <div className="flex flex-col mt-10 space-y-5">
@@ -20,14 +22,18 @@ const Details: React.FC<{ question: QuestionProp }> = ({ question }) => {
 
         <div className="sm:hidden flex justify-start items-center space-x-2 text-[#56617B]">
           <BsCalendar3 size={20} />
-          <span>Asked {getTimeAgo(question.created)}</span>
+          <span>
+            Asked <Moment fromNow>{question.created}</Moment>
+          </span>
         </div>
 
         <div className="flex justify-between items-center text-[#BBBBBB]">
           <div className="flex items-center flex-wrap text-[14px]">
             <div className="hidden sm:flex justify-center items-center space-x-2 text-[#56617B] mr-3">
               <BsCalendar3 size={20} />
-              <span>Asked {getTimeAgo(question.created)}</span>
+              <span>
+                Asked <Moment fromNow>{question.created}</Moment>
+              </span>
             </div>
 
             <div className="flex items-center space-x-3 flex-wrap">
