@@ -5,7 +5,7 @@ const AddQuestion: React.FC = () => {
   return (
     <div
       className={`fixed top-0 left-0 w-screen h-screen flex items-center justify-center
-    bg-black bg-opacity-50 transform z-50 transition-transform duration-300 scale-100`}
+    bg-black bg-opacity-50 transform z-50 transition-transform duration-300 scale-0`}
     >
       <div className="bg-[#16112F] text-[#BBBBBB] shadow-lg shadow-slate-900 rounded-xl w-11/12 md:w-2/5 h-7/12 p-6">
         <div className="flex flex-col">
