@@ -11,7 +11,7 @@ export default function Home({ questions }: { questions: QuestionProp[] }) {
     <div>
       <Head>
         <title>Home</title>
-        <link rel="icon" href="/fsavicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="w-screen pb-20 radial-gradient">

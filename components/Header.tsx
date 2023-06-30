@@ -2,6 +2,7 @@ import Image from 'next/image'
 import logo from '@/assets/images/Union.png'
 import { AiOutlineSearch } from 'react-icons/ai'
 import React from 'react'
+import Link from 'next/link'
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +10,9 @@ const Header: React.FC = () => {
       className="border-b border-[#212D4A] h-[80px] w-full flex
       justify-between items-center relative mb-2 px-3 sm:px-10"
     >
-      <Image width="60" height="32" src={logo} alt="logo" className="ml-2 sm:ml-0" />
+      <Link href="/">
+        <Image width="60" height="32" src={logo} alt="logo" className="ml-2 sm:ml-0" />
+      </Link>
 
       <div
         className="h-[48px] w-[90%] sm:w-[601px] border border-[#212D4A]
