@@ -6,13 +6,13 @@ import React from 'react'
 const Header: React.FC = () => {
   return (
     <header
-      className="border-b border-zinc-600 h-[80px] w-full flex
+      className="border-b border-[#212D4A] h-[80px] w-full flex
       justify-between items-center relative mb-2 px-3 sm:px-10"
     >
       <Image width="60" height="32" src={logo} alt="logo" className="ml-2 sm:ml-0" />
 
       <div
-        className="h-[48px] w-[90%] sm:w-[601px] border border-zinc-600
+        className="h-[48px] w-[90%] sm:w-[601px] border border-[#212D4A]
         rounded-full space-x-2 absolute flex sm:top-2 sm:mb-0
         top-10 px-1 sm:flex items-center sm:ml-80 mt-[12%] sm:mt-2"
       >

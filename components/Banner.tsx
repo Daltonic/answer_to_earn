@@ -4,18 +4,18 @@ import { BiNetworkChart } from 'react-icons/bi'
 const Banner: React.FC = () => {
   return (
     <div className="w-full py-3 px-4 sm:px-10">
-      <div className="mt-16 sm:mt-9 h-fit relative text-zinc-200">
+      <div className="mt-16 sm:mt-9 text-zinc-200">
         <h1
-          className="font-extrabold text-[59px] inline-block mt-2
+          className="font-extrabold text-[48px] sm:text-[59px] inline-block
           from-blue-700 to-pink-700 bg-gradient-to-r bg-clip-text text-transparent"
         >
           Ask Question
         </h1>
 
-        <div className="flex justify-between items-center font-bold text-sm mt-6 h-[20vh]">
+        <div className="flex justify-between items-center font-bold text-sm h-[10vh]">
           <div className="flex space-x-2 items-center h-[24px]">
             <BiNetworkChart className="text-[#212D4A] w-[24px] h-[24px]" />
-            <p className="hidden sm:flex">1 questions</p>
+            <p>1 questions</p>
           </div>
 
           <button
@@ -25,7 +25,8 @@ const Banner: React.FC = () => {
             Ask a Question
           </button>
         </div>
-        <hr className="bottom border-zinc-600 w-full" />
+
+        <hr className="bottom border-[#212D4A] w-full" />
       </div>
     </div>
   )
