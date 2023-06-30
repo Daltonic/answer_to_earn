@@ -5,6 +5,7 @@ import Questions from '@/components/Questions'
 import { generateQuestions } from '@/utils/helper'
 import { QuestionProp } from '@/utils/interfaces'
 import Empty from '@/components/Empty'
+import AddQuestion from '@/components/AddQuestion'
 
 export default function Home({ questions }: { questions: QuestionProp[] }) {
   return (
@@ -18,6 +19,7 @@ export default function Home({ questions }: { questions: QuestionProp[] }) {
         <Header />
         <Banner />
         {questions.length > 0 ? <Questions questions={questions} /> : <Empty />}
+        <AddQuestion />
       </main>
     </div>
   )
