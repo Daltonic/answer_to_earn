@@ -8,6 +8,8 @@ import { AnswerProp, QuestionProp } from '@/utils/interfaces'
 import Link from 'next/link'
 import Answers from '@/components/Answers'
 import { BiNetworkChart } from 'react-icons/bi'
+import { BsFillTrophyFill } from 'react-icons/bs'
+import AddComment from '@/components/AddComment'
 
 export default function Question({
   question,
@@ -55,12 +57,16 @@ export default function Question({
             </div>
           </div>
 
-          <Answers answers={answers} />
+          {answers.length > 0 ? (
+            <Answers answers={answers} />
+          ) : (
+            <div className="flex flex-col mt-10 items-center space-y-4">
+              <BsFillTrophyFill className="text-[#525F80]" size={40} />
+              <p className="text-[#BBBBBB]">Be the first one to drop an answer.</p>
+            </div>
+          )}
 
-          {/* <div className="flex flex-col mt-10 items-center space-y-4">
-            <BsFillTrophyFill className="text-[#525F80]" size={40} />
-            <p className="text-[#BBBBBB]">Be the first one to drop an answer.</p>
-          </div> */}
+          <AddComment />
         </div>
       </main>
     </div>
