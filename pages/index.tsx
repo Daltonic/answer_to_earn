@@ -4,20 +4,20 @@ import Banner from '@/components/Banner'
 import Questions from '@/components/Questions'
 import { generateQuestions } from '@/utils/helper'
 import { QuestionProp } from '@/utils/interfaces'
-
+import Empty from '@/components/Empty'
 
 export default function Home({ questions }: { questions: QuestionProp[] }) {
   return (
     <div>
       <Head>
         <title>Home</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/fsavicon.ico" />
       </Head>
 
       <main className="w-screen pb-20 radial-gradient">
         <Header />
         <Banner />
-        <Questions questions={questions} />
+        {questions.length > 0 ? <Questions questions={questions} /> : <Empty />}
       </main>
     </div>
   )
