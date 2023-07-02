@@ -12,6 +12,8 @@ import { BsFillTrophyFill } from 'react-icons/bs'
 import AddComment from '@/components/AddComment'
 import { useDispatch, useSelector } from 'react-redux'
 import { globalActions } from '@/store/globalSlices'
+import { getQuestion } from '@/services/blockchain'
+import { GetServerSidePropsContext } from 'next'
 
 export default function Question({
   questionData,
@@ -84,13 +86,23 @@ export default function Question({
   )
 }
 
-export const getServerSideProps = async () => {
-  const questionData = generateQuestions(1)
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const { id } = context.query
+  const questionId = typeof id === 'string' ? parseInt(id, 10) : undefined
+  if (typeof questionId !== 'number') {
+    return {
+      props: {
+        error: 'Invalid question ID',
+      },
+    }
+  }
+
+  const questionData = await getQuestion(questionId)
   const answersData = generateAnswers(4)
 
   return {
     props: {
-      questionData: JSON.parse(JSON.stringify(questionData[0])),
+      questionData: JSON.parse(JSON.stringify(questionData)),
       answersData: JSON.parse(JSON.stringify(answersData)),
     },
   }

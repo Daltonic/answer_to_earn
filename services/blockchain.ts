@@ -65,10 +65,16 @@ const checkWallet = async () => {
   }
 }
 
-const getQuestions = async () => {
+const getQuestions = async (): Promise<QuestionProp[]> => {
   const contract = await getEthereumContract()
   const questions = await contract.getQuestions()
   return structureQuestions(questions)
+}
+
+const getQuestion = async (id: number): Promise<QuestionProp> => {
+  const contract = await getEthereumContract()
+  const question = await contract.getQuestion(id)
+  return structureQuestions([question])[0]
 }
 
 const loadData = async () => {
@@ -95,4 +101,4 @@ const structureQuestions = (questions: any[]): QuestionProp[] =>
     prize: fromWei(question.prize),
   }))
 
-export { connectWallet, checkWallet, loadData, getQuestions }
+export { connectWallet, checkWallet, loadData, getQuestions, getQuestion }
