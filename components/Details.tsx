@@ -6,20 +6,24 @@ import React from 'react'
 import { QuestionProp } from '@/utils/interfaces'
 import { truncate } from '@/utils/helper'
 import Moment from 'react-moment'
+import QuestionAction from './QuestionAction'
 
 const Details: React.FC<{ question: QuestionProp | null }> = ({ question }) => {
   if (!question) return <p>Loading...</p>
 
   return (
     <>
-      <div className="flex flex-col mt-10 space-y-5">
-        <h4
-          className="inline-block from-blue-700 to-pink-700 leading-[30px]
-          bg-gradient-to-r bg-clip-text text-transparent text-[36.65px]"
-        >
-          {question.title}
-        </h4>
-        <p className="text-[14px] leading-[21px] text-[#BBBBBB]">{question.description}</p>
+      <div className="flex flex-col mt-10 space-y-5 text-[#BBBBBB]">
+        <div className="flex justify-between items-center">
+          <h4
+            className="inline-block from-blue-700 to-pink-700 leading-[30px]
+            bg-gradient-to-r bg-clip-text text-transparent text-[36.65px]"
+          >
+            {question.title}
+          </h4>
+          <QuestionAction />
+        </div>
+        <p className="text-[14px] leading-[21px]">{question.description}</p>
 
         <div className="sm:hidden flex justify-start items-center space-x-2 text-[#56617B]">
           <BsCalendar3 size={20} />
@@ -28,7 +32,7 @@ const Details: React.FC<{ question: QuestionProp | null }> = ({ question }) => {
           </span>
         </div>
 
-        <div className="flex justify-between items-center text-[#BBBBBB]">
+        <div className="flex justify-between items-center">
           <div className="flex items-center flex-wrap text-[14px]">
             <div className="hidden sm:flex justify-center items-center space-x-2 text-[#56617B] mr-3">
               <BsCalendar3 size={20} />
@@ -62,7 +66,7 @@ const Details: React.FC<{ question: QuestionProp | null }> = ({ question }) => {
         </div>
       </div>
 
-      <div className="flex flex-col space-y-3 text-[#BBBBBB] sm:hidden mt-5">
+      <div className="flex flex-col space-y-3 sm:hidden mt-5 text-[#BBBBBB]">
         <div className=" space-x-2 text-xs flex items-center">
           <Identicon className="h-6 rounded-full bg-slate-600" size={30} string={question.owner} />
           <p>{truncate({ text: question.owner, startChars: 4, endChars: 4, maxLength: 11 })}</p>
