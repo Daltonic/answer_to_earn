@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { RootState } from '@/utils/interfaces'
 import { useSelector } from 'react-redux'
 import { truncate } from '@/utils/helper'
+import { connectWallet } from '@/services/blockchain'
 
 const Header: React.FC = () => {
   const { wallet } = useSelector((states: RootState) => states.globalStates)
@@ -46,6 +47,7 @@ const Header: React.FC = () => {
           <button
             className="text-sm bg-blue-600 rounded-full w-[150px] h-[48px] text-white
           right-2 sm:right-10 hover:bg-blue-700  transition-colors duration-300"
+            onClick={connectWallet}
           >
             Connect wallet
           </button>
