@@ -22,6 +22,7 @@ a {
 
 .radial-gradient {
   background-image: radial-gradient(66.89% 66.89% at 50% 33.11%, #1C1643 0%, #16112E 42.71%, #0D0B15 87.09%);
-  background-size: 100% 100%; /* Adjust the background size to cover the entire viewport */
+  background-size: 100% 100%;
+  background-color: black;
 }
 

@@ -5,6 +5,9 @@ export const globalActions = {
   setWallet: (state: GlobalState, action: PayloadAction<string>) => {
     state.wallet = action.payload
   },
+  setQuestionModal: (state: GlobalState, action: PayloadAction<string>) => {
+    state.questionModal = action.payload
+  },
   setQuestions: (state: GlobalState, action: PayloadAction<QuestionProp[]>) => {
     state.questions = action.payload
   },

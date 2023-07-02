@@ -38,7 +38,7 @@ export default function Question({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-screen radial-gradient">
+      <main className="min-h-screen w-screen radial-gradient">
         <Header />
 
         <div className="mt-16 sm:mt-9 px-3 sm:px-10">

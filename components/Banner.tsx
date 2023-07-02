@@ -1,10 +1,14 @@
+import { globalActions } from '@/store/globalSlices'
 import { RootState } from '@/utils/interfaces'
 import React from 'react'
 import { BiNetworkChart } from 'react-icons/bi'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Banner: React.FC = () => {
   const { questions } = useSelector((states: RootState) => states.globalStates)
+  const dispatch = useDispatch()
+  const { setQuestionModal } = globalActions
+
   return (
     <div className="w-full py-3 px-4 sm:px-10">
       <div className="mt-16 sm:mt-9 text-zinc-200">
@@ -22,6 +26,7 @@ const Banner: React.FC = () => {
           </div>
 
           <button
+            onClick={() => dispatch(setQuestionModal('scale-100'))}
             className="h-[48px] w-[145px] border rounded-full tracking-tighter
            border-blue-600 hover:text-blue-600 transition-colors duration-300"
           >

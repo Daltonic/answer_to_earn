@@ -33,8 +33,16 @@ export interface QuestionProp {
   prize: string
 }
 
+export interface QuestionParams {
+  title: string
+  description: string
+  tags: string
+  prize: string
+}
+
 export interface GlobalState {
   wallet: string | null
+  questionModal: string | null
   questions: QuestionProp[]
   question: QuestionProp | null
   answers: AnswerProp[]

@@ -3,12 +3,13 @@ import { ethers } from 'ethers'
 import { globalActions } from '@/store/globalSlices'
 import address from '@/artifacts/contractAddress.json'
 import abi from '@/artifacts/contracts/AnswerToEarn.sol/AnswerToEarn.json'
-import { QuestionProp } from '@/utils/interfaces'
+import { QuestionParams, QuestionProp } from '@/utils/interfaces'
 
 const { setWallet, setAnswers, setQuestion, setQuestions } = globalActions
 const ContractAddress = address.address
 const ContractAbi = abi.abi
 let ethereum: any
+let tx: any
 
 if (typeof window !== 'undefined') {
   ethereum = (window as any).ethereum
@@ -77,6 +78,30 @@ const getQuestion = async (id: number): Promise<QuestionProp> => {
   return structureQuestions([question])[0]
 }
 
+const createQuestion = async (data: QuestionParams) => {
+  if (!ethereum) {
+    reportError('Please install Metamask')
+    return Promise.reject(new Error('Metamask not installed'))
+  }
+
+  try {
+    const contract = await getEthereumContract()
+    const { title, description, tags, prize } = data
+    const tx = await contract.createQuestion(title, description, tags, {
+      value: toWei(Number(prize)),
+    })
+
+    await tx.wait()
+    const questions = await getQuestions()
+
+    store.dispatch(setQuestions(questions))
+    return Promise.resolve(tx)
+  } catch (error) {
+    reportError(error)
+    return Promise.reject(error)
+  }
+}
+
 const loadData = async () => {
   await getQuestions()
 }
@@ -86,19 +111,21 @@ const reportError = (error: any) => {
 }
 
 const structureQuestions = (questions: any[]): QuestionProp[] =>
-  questions.map((question) => ({
-    id: Number(question.id),
-    title: question.title,
-    description: question.description,
-    owner: question.owner.toLowerCase(),
-    winner: question.winner.toLowerCase(),
-    paidout: question.paidout,
-    deleted: question.deleted,
-    updated: Number(question.updated),
-    created: Number(question.created),
-    answers: Number(question.answers),
-    tags: question.tags.split(',').map((tag: string) => tag.trim()),
-    prize: fromWei(question.prize),
-  }))
+  questions
+    .map((question) => ({
+      id: Number(question.id),
+      title: question.title,
+      description: question.description,
+      owner: question.owner.toLowerCase(),
+      winner: question.winner.toLowerCase(),
+      paidout: question.paidout,
+      deleted: question.deleted,
+      updated: Number(question.updated),
+      created: Number(question.created),
+      answers: Number(question.answers),
+      tags: question.tags.split(',').map((tag: string) => tag.trim()),
+      prize: fromWei(question.prize),
+    }))
+    .sort((a, b) => b.created - a.created)
 
-export { connectWallet, checkWallet, loadData, getQuestions, getQuestion }
+export { connectWallet, checkWallet, loadData, getQuestions, getQuestion, createQuestion }
