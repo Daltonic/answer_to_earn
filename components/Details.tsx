@@ -7,8 +7,9 @@ import { QuestionProp } from '@/utils/interfaces'
 import { truncate } from '@/utils/helper'
 import Moment from 'react-moment'
 
-const Details: React.FC<{ question: QuestionProp }> = ({ question }) => {
-  const currentTime = Date.now()
+const Details: React.FC<{ question: QuestionProp | null }> = ({ question }) => {
+  if (!question) return <p>Loading...</p>
+
   return (
     <>
       <div className="flex flex-col mt-10 space-y-5">

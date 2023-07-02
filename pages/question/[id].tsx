@@ -1,23 +1,34 @@
 import Head from 'next/head'
 import { MdOutlineArrowBackIosNew } from 'react-icons/md'
 import Header from '@/components/Header'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Details from '@/components/Details'
 import { generateAnswers, generateQuestions } from '@/utils/helper'
-import { AnswerProp, QuestionProp } from '@/utils/interfaces'
+import { AnswerProp, QuestionProp, RootState } from '@/utils/interfaces'
 import Link from 'next/link'
 import Answers from '@/components/Answers'
 import { BiNetworkChart } from 'react-icons/bi'
 import { BsFillTrophyFill } from 'react-icons/bs'
 import AddComment from '@/components/AddComment'
+import { useDispatch, useSelector } from 'react-redux'
+import { globalActions } from '@/store/globalSlices'
 
 export default function Question({
-  question,
-  answers,
+  questionData,
+  answersData,
 }: {
-  question: QuestionProp
-  answers: AnswerProp[]
+  questionData: QuestionProp
+  answersData: AnswerProp[]
 }) {
+  const dispatch = useDispatch()
+  const { setQuestion, setAnswers } = globalActions
+  const { question, answers } = useSelector((states: RootState) => states.globalStates)
+
+  useEffect(() => {
+    dispatch(setQuestion(questionData))
+    dispatch(setAnswers(answersData))
+  }, [dispatch, questionData, answersData, setQuestion, setAnswers])
+
   return (
     <div>
       <Head>
@@ -79,8 +90,8 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      question: JSON.parse(JSON.stringify(questionData[0])),
-      answers: JSON.parse(JSON.stringify(answersData)),
+      questionData: JSON.parse(JSON.stringify(questionData[0])),
+      answersData: JSON.parse(JSON.stringify(answersData)),
     },
   }
 }
