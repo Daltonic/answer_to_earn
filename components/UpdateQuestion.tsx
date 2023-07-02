@@ -1,12 +1,12 @@
-import { createQuestion } from '@/services/blockchain'
+import { updateQuestion } from '@/services/blockchain'
 import { globalActions } from '@/store/globalSlices'
-import { QuestionParams, RootState } from '@/utils/interfaces'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { QuestionParams, QuestionProp, RootState } from '@/utils/interfaces'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
-const AddQuestion: React.FC = () => {
+const UpdateQuestion: React.FC<{ questionData: QuestionProp | null }> = ({ questionData }) => {
   const [question, setQuestion] = useState<QuestionParams>({
     title: '',
     description: '',
@@ -14,18 +14,32 @@ const AddQuestion: React.FC = () => {
     prize: '',
   })
 
+  useEffect(() => {
+    if (questionData) {
+      const { title, description, tags, prize } = questionData
+      setQuestion({ title, description, tags: tags.join(','), prize })
+    }
+  }, [questionData])
+
   const dispatch = useDispatch()
-  const { setQuestionModal } = globalActions
-  const { questionModal } = useSelector((states: RootState) => states.globalStates)
+  const { setQuestionUpdateModal } = globalActions
+  const { questionUpdateModal } = useSelector((states: RootState) => states.globalStates)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    if (!question.title || !question.prize || !question.tags || !question.description) return
+    if (
+      !question.title ||
+      !question.prize ||
+      !question.tags ||
+      !question.description ||
+      !questionData?.id
+    )
+      return
 
     await toast.promise(
       new Promise<void>((resolve, reject) => {
-        createQuestion(question)
+        updateQuestion(questionData?.id, question)
           .then((tx) => {
             closeModal()
             resolve(tx)
@@ -49,7 +63,7 @@ const AddQuestion: React.FC = () => {
   }
 
   const closeModal = () => {
-    dispatch(setQuestionModal('scale-0'))
+    dispatch(setQuestionUpdateModal('scale-0'))
     setQuestion({
       title: '',
       description: '',
@@ -61,12 +75,12 @@ const AddQuestion: React.FC = () => {
   return (
     <div
       className={`fixed top-0 left-0 w-screen h-screen flex items-center justify-center
-    bg-black bg-opacity-50 transform z-50 transition-transform duration-300 ${questionModal}`}
+    bg-black bg-opacity-50 transform z-50 transition-transform duration-300 ${questionUpdateModal}`}
     >
       <div className="bg-[#16112F] text-[#BBBBBB] shadow-lg shadow-pink-500 rounded-xl w-11/12 md:w-2/5 h-7/12 p-6">
         <div className="flex flex-col">
           <div className="flex flex-row justify-between items-center">
-            <p className="font-semibold">Add question</p>
+            <p className="font-semibold">Edit question</p>
             <button onClick={closeModal} className="border-0 bg-transparent focus:outline-none">
               <FaTimes />
             </button>
@@ -131,7 +145,7 @@ const AddQuestion: React.FC = () => {
               className="text-sm bg-blue-600 rounded-full w-[150px] h-[48px] text-white
               mt-5 hover:bg-blue-700 transition-colors duration-300"
             >
-              Submit
+              Update
             </button>
           </form>
         </div>
@@ -140,4 +154,4 @@ const AddQuestion: React.FC = () => {
   )
 }
 
-export default AddQuestion
+export default UpdateQuestion

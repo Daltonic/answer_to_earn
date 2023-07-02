@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { globalActions } from '@/store/globalSlices'
 import { getQuestion } from '@/services/blockchain'
 import { GetServerSidePropsContext } from 'next'
+import UpdateQuestion from '@/components/UpdateQuestion'
 
 export default function Question({
   questionData,
@@ -82,6 +83,8 @@ export default function Question({
           <AddComment />
         </div>
       </main>
+
+      <UpdateQuestion questionData={question} />
     </div>
   )
 }

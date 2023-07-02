@@ -19,7 +19,7 @@ export interface AnswerProp {
 }
 
 export interface QuestionProp {
-  id: number
+  id: number 
   title: string
   description: string
   owner: string
@@ -43,6 +43,7 @@ export interface QuestionParams {
 export interface GlobalState {
   wallet: string | null
   questionModal: string | null
+  questionUpdateModal: string | null
   questions: QuestionProp[]
   question: QuestionProp | null
   answers: AnswerProp[]

@@ -3,8 +3,13 @@ import { FiEdit } from 'react-icons/fi'
 import { BsTrash3 } from 'react-icons/bs'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { globalActions } from '@/store/globalSlices'
 
 const QuestionAction: React.FC = () => {
+  const dispatch = useDispatch()
+  const { setQuestionUpdateModal } = globalActions
+
   return (
     <Menu as="div" className="inline-block text-left text-[#BBBBBB]">
       <Menu.Button
@@ -27,6 +32,7 @@ const QuestionAction: React.FC = () => {
               className={`flex justify-start items-center space-x-1 ${
                 active ? 'bg-[#0D0B15] text-[#BBBBBB]' : 'text-[#BBBBBB]'
               } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+              onClick={() => dispatch(setQuestionUpdateModal('scale-100'))}
             >
               <FiEdit size={17} />
               <span>Edit</span>

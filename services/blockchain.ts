@@ -102,6 +102,28 @@ const createQuestion = async (data: QuestionParams) => {
   }
 }
 
+const updateQuestion = async (id: number, data: QuestionParams) => {
+  if (!ethereum) {
+    reportError('Please install Metamask')
+    return Promise.reject(new Error('Metamask not installed'))
+  }
+
+  try {
+    const contract = await getEthereumContract()
+    const { title, description, tags } = data
+    const tx = await contract.updateQuestion(id, title, description, tags)
+
+    await tx.wait()
+    const question = await getQuestion(id)
+
+    store.dispatch(setQuestion(question))
+    return Promise.resolve(tx)
+  } catch (error) {
+    reportError(error)
+    return Promise.reject(error)
+  }
+}
+
 const loadData = async () => {
   await getQuestions()
 }
@@ -128,4 +150,12 @@ const structureQuestions = (questions: any[]): QuestionProp[] =>
     }))
     .sort((a, b) => b.created - a.created)
 
-export { connectWallet, checkWallet, loadData, getQuestions, getQuestion, createQuestion }
+export {
+  connectWallet,
+  checkWallet,
+  loadData,
+  getQuestions,
+  getQuestion,
+  createQuestion,
+  updateQuestion,
+}
