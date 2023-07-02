@@ -2,12 +2,23 @@ import Head from 'next/head'
 import Header from '@/components/Header'
 import Banner from '@/components/Banner'
 import Questions from '@/components/Questions'
-import { generateQuestions } from '@/utils/helper'
-import { QuestionProp } from '@/utils/interfaces'
+import { QuestionProp, RootState } from '@/utils/interfaces'
 import Empty from '@/components/Empty'
 import AddQuestion from '@/components/AddQuestion'
+import { getQuestions } from '@/services/blockchain'
+import { useDispatch, useSelector } from 'react-redux'
+import { globalActions } from '@/store/globalSlices'
+import { useEffect } from 'react'
 
-export default function Home({ questions }: { questions: QuestionProp[] }) {
+export default function Home({ questionsData }: { questionsData: QuestionProp[] }) {
+  const dispatch = useDispatch()
+  const { setQuestions } = globalActions
+  const { questions } = useSelector((states: RootState) => states.globalStates)
+
+  useEffect(() => {
+    dispatch(setQuestions(questionsData))
+  }, [dispatch, setQuestions, questionsData])
+
   return (
     <div>
       <Head>
@@ -15,7 +26,7 @@ export default function Home({ questions }: { questions: QuestionProp[] }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-screen pb-20 radial-gradient">
+      <main className="w-screen h-screen pb-20 radial-gradient">
         <Header />
         <Banner />
         {questions.length > 0 ? <Questions questions={questions} /> : <Empty />}
@@ -26,8 +37,8 @@ export default function Home({ questions }: { questions: QuestionProp[] }) {
 }
 
 export const getServerSideProps = async () => {
-  const data = generateQuestions(4)
+  const questionsData: QuestionProp[] = await getQuestions()
   return {
-    props: { questions: JSON.parse(JSON.stringify(data)) },
+    props: { questionsData: JSON.parse(JSON.stringify(questionsData)) },
   }
 }

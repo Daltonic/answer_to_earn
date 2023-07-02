@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import { globalActions } from '@/store/globalSlices'
 import address from '@/artifacts/contractAddress.json'
 import abi from '@/artifacts/contracts/AnswerToEarn.sol/AnswerToEarn.json'
+import { QuestionProp } from '@/utils/interfaces'
 
 const { setWallet, setAnswers, setQuestion, setQuestions } = globalActions
 const ContractAddress = address.address
@@ -17,11 +18,7 @@ const toWei = (num: number) => ethers.utils.parseEther(num.toString())
 const fromWei = (num: number) => ethers.utils.formatEther(num)
 
 const getEthereumContract = async () => {
-  if (!ethereum) {
-    throw new Error('Ethereum provider not available')
-  }
-
-  const accounts = await ethereum.request?.({ method: 'eth_accounts' })
+  const accounts = await ethereum?.request?.({ method: 'eth_accounts' })
   const provider = accounts?.[0]
     ? new ethers.providers.Web3Provider(ethereum)
     : new ethers.providers.JsonRpcProvider(process.env.NEXT_APP_RPC_URL)
@@ -68,8 +65,34 @@ const checkWallet = async () => {
   }
 }
 
+const getQuestions = async () => {
+  const contract = await getEthereumContract()
+  const questions = await contract.getQuestions()
+  return structureQuestions(questions)
+}
+
+const loadData = async () => {
+  await getQuestions()
+}
+
 const reportError = (error: any) => {
   console.log(error)
 }
 
-export { connectWallet, checkWallet }
+const structureQuestions = (questions: any[]): QuestionProp[] =>
+  questions.map((question) => ({
+    id: Number(question.id),
+    title: question.title,
+    description: question.description,
+    owner: question.owner.toLowerCase(),
+    winner: question.winner.toLowerCase(),
+    paidout: question.paidout,
+    deleted: question.deleted,
+    updated: Number(question.updated),
+    created: Number(question.created),
+    answers: Number(question.answers),
+    tags: question.tags.split(',').map((tag: string) => tag.trim()),
+    prize: fromWei(question.prize),
+  }))
+
+export { connectWallet, checkWallet, loadData, getQuestions }

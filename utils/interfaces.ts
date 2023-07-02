@@ -30,7 +30,7 @@ export interface QuestionProp {
   created: number
   answers: number
   tags: string[]
-  prize: number
+  prize: string
 }
 
 export interface GlobalState {
