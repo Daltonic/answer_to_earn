@@ -31,7 +31,7 @@ export function generateQuestions(count: number): QuestionProp[] {
       created: Date.now(),
       answers: Math.floor(Math.random() * 10),
       tags: generateRandomTags(3), // Generate 3 random tags
-      prize: Math.floor(Math.random() * 1000),
+      prize: Math.floor(Math.random() * 1000).toString(),
     }
 
     questions.push(question)
@@ -51,6 +51,7 @@ export function generateAnswers(count: number): AnswerProp[] {
       Assumenda possimus fuga delectus, odit recusandae saepe odio! ${i}`,
       owner: '0x1234567890123456789012345678901234567890',
       deleted: false,
+      updated: Date.now(),
       created: Date.now(),
     }
 
