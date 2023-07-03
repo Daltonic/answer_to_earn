@@ -42,6 +42,7 @@ export interface QuestionParams {
 
 export interface GlobalState {
   wallet: string | null
+  answerModal: string | null
   questionModal: string | null
   questionUpdateModal: string | null
   questionDeleteModal: string | null

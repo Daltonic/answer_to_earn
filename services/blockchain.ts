@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import { globalActions } from '@/store/globalSlices'
 import address from '@/artifacts/contractAddress.json'
 import abi from '@/artifacts/contracts/AnswerToEarn.sol/AnswerToEarn.json'
-import { QuestionParams, QuestionProp } from '@/utils/interfaces'
+import { AnswerProp, QuestionParams, QuestionProp } from '@/utils/interfaces'
 
 const { setWallet, setAnswers, setQuestion, setQuestions } = globalActions
 const ContractAddress = address.address
@@ -145,6 +145,36 @@ const deleteQuestion = async (id: number) => {
   }
 }
 
+const createAnswer = async (id: number, answer: string) => {
+  if (!ethereum) {
+    reportError('Please install Metamask')
+    return Promise.reject(new Error('Metamask not installed'))
+  }
+
+  try {
+    const contract = await getEthereumContract()
+    const tx = await contract.addAnswer(id, answer)
+
+    await tx.wait()
+    const question = await getQuestion(id)
+    const answers = await getAnswers(id)
+
+    store.dispatch(setQuestion(question))
+    store.dispatch(setAnswers(answers))
+
+    return Promise.resolve(tx)
+  } catch (error) {
+    reportError(error)
+    return Promise.reject(error)
+  }
+}
+
+const getAnswers = async (id: number): Promise<AnswerProp[]> => {
+  const contract = await getEthereumContract()
+  const answers = await contract.getAnswers(id)
+  return structureAnswers(answers)
+}
+
 const loadData = async () => {
   await getQuestions()
 }
@@ -171,6 +201,18 @@ const structureQuestions = (questions: any[]): QuestionProp[] =>
     }))
     .sort((a, b) => b.created - a.created)
 
+const structureAnswers = (answers: any[]): AnswerProp[] =>
+  answers
+    .map((answer) => ({
+      id: Number(answer.id),
+      qid: Number(answer.qid),
+      comment: answer.comment,
+      owner: answer.owner.toLowerCase(),
+      deleted: answer.deleted,
+      created: Number(answer.created),
+    }))
+    .sort((a, b) => b.created - a.created)
+
 export {
   connectWallet,
   checkWallet,
@@ -180,4 +222,6 @@ export {
   createQuestion,
   updateQuestion,
   deleteQuestion,
+  createAnswer,
+  getAnswers,
 }

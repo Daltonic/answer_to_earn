@@ -12,7 +12,7 @@ import { BsFillTrophyFill } from 'react-icons/bs'
 import AddComment from '@/components/AddComment'
 import { useDispatch, useSelector } from 'react-redux'
 import { globalActions } from '@/store/globalSlices'
-import { getQuestion } from '@/services/blockchain'
+import { getAnswers, getQuestion } from '@/services/blockchain'
 import { GetServerSidePropsContext } from 'next'
 import UpdateQuestion from '@/components/UpdateQuestion'
 import DeleteQuestion from '@/components/DeleteQuestion'
@@ -25,7 +25,7 @@ export default function Question({
   answersData: AnswerProp[]
 }) {
   const dispatch = useDispatch()
-  const { setQuestion, setAnswers } = globalActions
+  const { setQuestion, setAnswers, setAnswerModal } = globalActions
   const { question, answers } = useSelector((states: RootState) => states.globalStates)
 
   useEffect(() => {
@@ -61,6 +61,7 @@ export default function Question({
           <button
             className="text-sm bg-blue-600 rounded-full w-[150px] h-[48px] text-white
             right-2 sm:right-10 hover:bg-blue-700  transition-colors duration-300"
+            onClick={() => dispatch(setAnswerModal('scale-100'))}
           >
             Add Answer
           </button>
@@ -80,14 +81,12 @@ export default function Question({
               <p className="text-[#BBBBBB]">Be the first one to drop an answer.</p>
             </div>
           )}
-
-          <AddComment />
         </div>
       </main>
 
+      <AddComment questionData={question} />
       <UpdateQuestion questionData={question} />
       <DeleteQuestion questionData={question} />
-
     </div>
   )
 }
@@ -104,7 +103,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 
   const questionData = await getQuestion(questionId)
-  const answersData = generateAnswers(4)
+  const answersData = await getAnswers(questionId)
 
   return {
     props: {
