@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { checkWallet } from '@/services/blockchain'
-import DeleteQuestion from '@/components/DeleteQuestion'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -17,7 +16,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <Component {...pageProps} />
 
-      <DeleteQuestion />
       <ToastContainer
         position="bottom-center"
         autoClose={5000}

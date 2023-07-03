@@ -44,6 +44,7 @@ export interface GlobalState {
   wallet: string | null
   questionModal: string | null
   questionUpdateModal: string | null
+  questionDeleteModal: string | null
   questions: QuestionProp[]
   question: QuestionProp | null
   answers: AnswerProp[]

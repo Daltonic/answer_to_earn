@@ -15,6 +15,7 @@ import { globalActions } from '@/store/globalSlices'
 import { getQuestion } from '@/services/blockchain'
 import { GetServerSidePropsContext } from 'next'
 import UpdateQuestion from '@/components/UpdateQuestion'
+import DeleteQuestion from '@/components/DeleteQuestion'
 
 export default function Question({
   questionData,
@@ -85,6 +86,8 @@ export default function Question({
       </main>
 
       <UpdateQuestion questionData={question} />
+      <DeleteQuestion questionData={question} />
+
     </div>
   )
 }

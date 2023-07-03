@@ -48,7 +48,7 @@ const UpdateQuestion: React.FC<{ questionData: QuestionProp | null }> = ({ quest
       }),
       {
         pending: 'Approve transaction...',
-        success: 'Question created successfully 👌',
+        success: 'Question updated successfully 👌',
         error: 'Encountered error 🤯',
       }
     )
@@ -64,12 +64,6 @@ const UpdateQuestion: React.FC<{ questionData: QuestionProp | null }> = ({ quest
 
   const closeModal = () => {
     dispatch(setQuestionUpdateModal('scale-0'))
-    setQuestion({
-      title: '',
-      description: '',
-      tags: '',
-      prize: '',
-    })
   }
 
   return (
@@ -101,7 +95,7 @@ const UpdateQuestion: React.FC<{ questionData: QuestionProp | null }> = ({ quest
                 required
               />
             </div>
-            <label className="text-[12px]">Prize</label>
+            {/* <label className="text-[12px]">Prize</label>
             <div className="py-4 w-full border border-[#212D4A] rounded-full flex items-center px-4 mb-3 mt-2">
               <input
                 placeholder="ETH e.g 0.02"
@@ -111,7 +105,7 @@ const UpdateQuestion: React.FC<{ questionData: QuestionProp | null }> = ({ quest
                 onChange={handleChange}
                 required
               />
-            </div>
+            </div> */}
             <label className="text-[12px]">Tags</label>
             <div
               className="py-4 w-full border border-[#212D4A] 

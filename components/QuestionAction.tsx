@@ -8,7 +8,7 @@ import { globalActions } from '@/store/globalSlices'
 
 const QuestionAction: React.FC = () => {
   const dispatch = useDispatch()
-  const { setQuestionUpdateModal } = globalActions
+  const { setQuestionUpdateModal, setQuestionDeleteModal } = globalActions
 
   return (
     <Menu as="div" className="inline-block text-left text-[#BBBBBB]">
@@ -45,6 +45,7 @@ const QuestionAction: React.FC = () => {
               className={`flex justify-start items-center space-x-1 ${
                 active ? 'bg-red-500' : 'text-red-500'
               } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+              onClick={() => dispatch(setQuestionDeleteModal('scale-100'))}
             >
               <BsTrash3 size={17} />
               <span>Delete</span>
