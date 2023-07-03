@@ -5,7 +5,7 @@ import { BiNetworkChart } from 'react-icons/bi'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Banner: React.FC = () => {
-  const { questions } = useSelector((states: RootState) => states.globalStates)
+  const { questions, wallet } = useSelector((states: RootState) => states.globalStates)
   const dispatch = useDispatch()
   const { setQuestionModal } = globalActions
 
@@ -25,13 +25,15 @@ const Banner: React.FC = () => {
             <p>{questions.length} question(s)</p>
           </div>
 
-          <button
-            onClick={() => dispatch(setQuestionModal('scale-100'))}
-            className="h-[48px] w-[145px] border rounded-full tracking-tighter
+          {wallet && (
+            <button
+              onClick={() => dispatch(setQuestionModal('scale-100'))}
+              className="h-[48px] w-[145px] border rounded-full tracking-tighter
            border-blue-600 hover:text-blue-600 transition-colors duration-300"
-          >
-            Ask a Question
-          </button>
+            >
+              Ask a Question
+            </button>
+          )}
         </div>
 
         <hr className="bottom border-[#212D4A] w-full" />
