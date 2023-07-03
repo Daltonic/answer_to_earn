@@ -16,6 +16,7 @@ export interface AnswerProp {
   owner: string
   deleted: boolean
   created: number
+  updated: number
 }
 
 export interface QuestionProp {

@@ -196,7 +196,7 @@ const payWinner = async (qid: number, id: number) => {
 const getAnswers = async (id: number): Promise<AnswerProp[]> => {
   const contract = await getEthereumContract()
   const answers = await contract.getAnswers(id)
-  return structureAnswers(answers)
+  return structureAnswers(answers) || []
 }
 
 const loadData = async () => {
@@ -234,8 +234,9 @@ const structureAnswers = (answers: any[]): AnswerProp[] =>
       owner: answer.owner.toLowerCase(),
       deleted: answer.deleted,
       created: Number(answer.created),
+      updated: Number(answer.updated),
     }))
-    .sort((a, b) => b.created - a.created)
+    .sort((a, b) => b.updated - a.updated)
 
 export {
   connectWallet,
