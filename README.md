@@ -1,48 +1,69 @@
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/26466516/107675802-36216b80-6c77-11eb-8db1-4d3407dc53d9.png" alt="Next.js and TypeScript">
-</p>
+# How to Build an Answer to Earn (A2E) Platform with NextJs, TypeScript, Tailwind CSS, and Solidity
 
-<p align="center">
-  <img src="https://img.shields.io/static/v1?label=PRs&message=welcome&style=for-the-badge&color=24B36B&labelColor=000000" alt="PRs welcome!" />
+Read the full tutorial here: [**>> How to Build an Answer to Earn (A2E) Platform with NextJs, TypeScript, Tailwind CSS, and Solidity**](https://daltonic.github.io)
 
-  <img alt="License" src="https://img.shields.io/github/license/chhpt/typescript-nextjs-starter?style=for-the-badge&color=24B36B&labelColor=000000">
+This example shows How to Build an Answer to Earn (A2E) Platform with NextJs, TypeScript, Tailwind CSS, and Solidity:
 
-  <a href="https://twitter.com/intent/follow?screen_name=cwuyiqing">
-    <img src="https://img.shields.io/twitter/follow/cwuyiqing?style=for-the-badge&color=24B36B&labelColor=000000" alt="Follow @chhpt" />
-  </a>
-</p>
+![Questions](./screenshots/0.png)
+<center><figcaption>Questions</figcaption></center>
 
-<br>
+![Creating Questions](./screenshots/1.png)
+<center><figcaption>Creating Questions</figcaption></center>
 
+![Questions Details](./screenshots/2.png)
+<center><figcaption>Questions Details</figcaption></center>
 
-# Hardhat-Tailwind-NextJs Ethers Starter Kit
-Speedily develope your decentralized application with this NextJs starter kit for free. It has Redux-Toolkit, NextJs 13, React 18, Hardhat, EthersJs, Tailwind, etc.
+## Technology
 
-Follow the steps below to download, install, and run this project.
+This demo uses:
 
-## Dependencies
-Install these prerequisites to follow along with the tutorial. See free video tutorial or a full explanation of each prerequisite.
-- NPM: https://nodejs.org
-- Hardhat: https://hardhat.org/
-- EthersJs: https://ethers.org/
-- Tailwind CSS: https://tailwindcss.com/
+- Metamask
+- Hardhat
+- Infuira
+- NextJs
+- TypeScript
+- Tailwind CSS
+- Solidity
+- EthersJs
+- Faucet
 
+## Running the demo
 
-## Step 1. Clone the project
-`git clone https://github.com/Daltonic/hardhat_ethersjs_next_starter_app <PROJECT NAME>`
+To run the demo follow these steps:
 
-## Step 2. Install dependencies
-```sh
-$ cd <PROJECT NAME>
-$ yarn install # or npm install
-```
-## Step 3. Start Hardhat Node
-Open the terminal and run the command below.
-```sh
-$ yarn hardhat node
-```
+1. Clone the project with the code below.
 
-## Step 4. Run the Front End Application
-`$ yarn dev`
-Visit this URL in your browser: http://localhost:3000
+   ```sh
 
+   # Make sure you have the above prerequisites installed already!
+   git clone https://github.com/Daltonic/answer_to_earn answerToEarn
+   cd answerToEarn # Navigate to the new folder.
+   ```
+
+2. Create a `.env` file to include the following details.
+   ```sh
+    NEXT_APP_RPC_URL=http://127.0.0.1:8545/
+   ```
+3. On one terminal, run the app using:
+   ```
+    yarn install
+    yarn hardhat run scripts/deploy.js
+   ```
+
+4. On a second terminal, run the app using `yarn dev` to launch on the browser.
+   <br/>
+
+If your confuse about the installation, check out this **TUTORIAL** to see how you should run it.
+
+Questions about running the demo? [Open an issue](https://github.com/Daltonic/answer_to_earn/issues). We're here to help ✌️
+
+## Useful links
+
+- 🏠 [Website](https://daltonic.github.io/)
+- ⚽ [Metamask](https://metamask.io/)
+- 🚀 [Infuria](https://app.infura.io/dashboard/)
+- 💡 [Hardhat](https://hardhat.org/)
+- 🔥 [NextJs](https://nextjs.org/)
+- 🐻 [Solidity](https://soliditylang.org/)
+- 👀 [Ethersjs](https://docs.ethers.io/v5/)
+- ✨ [Live Demo](https://answer-to-earn.vercel.app/)
