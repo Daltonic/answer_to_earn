@@ -18,13 +18,23 @@ const Questions: React.FC<{ questions: QuestionProp[] }> = ({ questions }) => {
 
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3 flex-wrap ">
-                <div
-                  className="flex space-x-1 border border-pink-500 h-[32px] w-[90px]
+                {question.paidout ? (
+                  <div
+                    className="flex space-x-1 border border-green-400 h-[32px] w-[90px]
+                  justify-center items-center rounded-md text-green-400 cursor-pointer"
+                  >
+                    <FaEthereum className="w-[10px] h-[15px]" />
+                    <p>{question.prize} Paid</p>
+                  </div>
+                ) : (
+                  <div
+                    className="flex space-x-1 border border-pink-500 h-[32px] w-[90px]
                   justify-center items-center rounded-md text-pink-500 cursor-pointer"
-                >
-                  <FaEthereum className="w-[10px] h-[15px]" />
-                  <p>{question.prize} prize</p>
-                </div>
+                  >
+                    <FaEthereum className="w-[10px] h-[15px]" />
+                    <p>{question.prize} prize</p>
+                  </div>
+                )}
 
                 <Tags tags={question.tags} />
                 <TagsSm tags={question.tags} />

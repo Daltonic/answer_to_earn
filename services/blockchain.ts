@@ -169,6 +169,30 @@ const createAnswer = async (id: number, answer: string) => {
   }
 }
 
+const payWinner = async (qid: number, id: number) => {
+  if (!ethereum) {
+    reportError('Please install Metamask')
+    return Promise.reject(new Error('Metamask not installed'))
+  }
+
+  try {
+    const contract = await getEthereumContract()
+    const tx = await contract.payWinner(qid, id)
+
+    await tx.wait()
+    const question = await getQuestion(id)
+    const answers = await getAnswers(id)
+
+    store.dispatch(setQuestion(question))
+    store.dispatch(setAnswers(answers))
+
+    return Promise.resolve(tx)
+  } catch (error) {
+    reportError(error)
+    return Promise.reject(error)
+  }
+}
+
 const getAnswers = async (id: number): Promise<AnswerProp[]> => {
   const contract = await getEthereumContract()
   const answers = await contract.getAnswers(id)
@@ -224,4 +248,5 @@ export {
   deleteQuestion,
   createAnswer,
   getAnswers,
+  payWinner,
 }

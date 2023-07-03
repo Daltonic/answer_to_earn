@@ -74,7 +74,7 @@ export default function Question({
           </div>
 
           {answers.length > 0 ? (
-            <Answers answers={answers} />
+            <Answers answers={answers} questionData={question} />
           ) : (
             <div className="flex flex-col mt-10 items-center space-y-4">
               <BsFillTrophyFill className="text-[#525F80]" size={40} />
