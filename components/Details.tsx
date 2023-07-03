@@ -3,12 +3,14 @@ import { FaEthereum } from 'react-icons/fa'
 import { Tags, TagsSm } from './Tags'
 import Identicon from 'react-identicons'
 import React from 'react'
-import { QuestionProp } from '@/utils/interfaces'
+import { QuestionProp, RootState } from '@/utils/interfaces'
 import { truncate } from '@/utils/helper'
 import Moment from 'react-moment'
 import QuestionAction from './QuestionAction'
+import { useSelector } from 'react-redux'
 
 const Details: React.FC<{ question: QuestionProp | null }> = ({ question }) => {
+  const { wallet } = useSelector((states: RootState) => states.globalStates)
   if (!question) return <p>Loading...</p>
 
   return (
@@ -21,7 +23,7 @@ const Details: React.FC<{ question: QuestionProp | null }> = ({ question }) => {
           >
             {question.title}
           </h4>
-          <QuestionAction />
+          {wallet && <QuestionAction />}
         </div>
         <p className="text-[14px] leading-[21px]">{question.description}</p>
 

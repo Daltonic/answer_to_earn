@@ -44,9 +44,7 @@ const Questions: React.FC<{ questions: QuestionProp[] }> = ({ questions }) => {
                     {question.answers === 0 ? 'No answer yet' : `${question.answers} answer(s)`}
                   </p>
                   <p>/</p>
-                  <span>
-                    <Moment fromNow>{question.created}</Moment>
-                  </span>
+                  <Moment fromNow>{question.created}</Moment>
                 </div>
               </div>
 
@@ -68,9 +66,7 @@ const Questions: React.FC<{ questions: QuestionProp[] }> = ({ questions }) => {
                   {question.answers === 0 ? 'No answer yet' : `${question.answers} answer(s)`}
                 </p>
                 <p>/</p>
-                <span>
-                  <Moment fromNow>{question.created}</Moment>
-                </span>
+                <Moment fromNow>{question.created}</Moment>
               </div>
 
               <div className=" space-x-2  flex items-center">

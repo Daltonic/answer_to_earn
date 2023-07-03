@@ -63,13 +63,15 @@ export default function Question({
 
           <hr className="bottom border-[#212D4A] w-full my-7" />
 
-          <button
-            className="text-sm bg-blue-600 rounded-full w-[150px] h-[48px] text-white
+          {wallet && (
+            <button
+              className="text-sm bg-blue-600 rounded-full w-[150px] h-[48px] text-white
             right-2 sm:right-10 hover:bg-blue-700  transition-colors duration-300"
-            onClick={() => dispatch(setAnswerModal('scale-100'))}
-          >
-            Add Answer
-          </button>
+              onClick={() => dispatch(setAnswerModal('scale-100'))}
+            >
+              Add Answer
+            </button>
+          )}
 
           <div className="flex justify-between items-center font-bold text-sm text-[#BBBBBB] mt-6">
             <div className="flex space-x-2 items-center h-[24px]">
