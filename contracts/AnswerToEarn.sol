@@ -32,6 +32,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     address owner;
     bool deleted;
     uint created;
+    uint updated;
   }
 
   event Action(uint id, string actionType, address indexed executor, uint256 timestamp);
@@ -140,6 +141,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     answer.comment = comment;
     answer.owner = msg.sender;
     answer.created = currentTime();
+    answer.updated = currentTime();
     questions[qid].answers++;
     answersOf[qid][answer.id] = answer;
 
@@ -147,6 +149,14 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
   }
 
   function getAnswers(uint qid) public view returns (AnswerStruct[] memory Answers) {
+    if (msg.sender == questions[qid].owner || msg.sender == owner()) {
+      return privateAnswers(qid);
+    } else {
+      return publicAnswers(qid);
+    }
+  }
+
+  function publicAnswers(uint qid) internal view returns (AnswerStruct[] memory Answers) {
     uint available = 0;
     for (uint i = 0; i < _totalAnswers.current(); i++) {
       if (answersOf[qid][i + 1].qid == qid) available++;
@@ -168,6 +178,24 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
     }
   }
 
+  function privateAnswers(uint qid) internal view returns (AnswerStruct[] memory Answers) {
+    uint available = 0;
+    for (uint i = 0; i < _totalAnswers.current(); i++) {
+      if (answersOf[qid][i + 1].qid == qid) {
+        available++;
+      }
+    }
+
+    Answers = new AnswerStruct[](available);
+
+    uint index = 0;
+    for (uint i = 0; i < _totalAnswers.current(); i++) {
+      if (answersOf[qid][i + 1].qid == qid) {
+        Answers[index++] = answersOf[qid][i + 1];
+      }
+    }
+  }
+
   function getAnswer(uint qid, uint id) public view returns (AnswerStruct memory) {
     return answersOf[qid][id];
   }
@@ -184,6 +212,7 @@ contract AnswerToEarn is ReentrancyGuard, Ownable {
 
     questions[qid].paidout = true;
     questions[qid].winner = winner;
+    answersOf[qid][id].updated = currentTime();
 
     payTo(winner, reward - tax);
     payTo(owner(), tax);
